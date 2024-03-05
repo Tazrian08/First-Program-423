@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import random
+import time
 
 
 
@@ -105,6 +106,7 @@ def midpointLineDrawing(x1, y1, x2, y2):
             d = d + incE
 
 score=0
+start=time.time()
 over=False
 pause=False
 terminate=False
@@ -142,11 +144,11 @@ def draw_catcher():
 
 
 def draw_diamond():
-    global dm_pos
+    global dm_pos, over
     global dm_vert
     global terminate
     # Define catcher dimensions
-    if terminate==False:
+    if terminate==False and over==False:
         dm_width = 10
         dm_height = 5
         dm_x = int(dm_pos - dm_width / 2)
@@ -202,18 +204,22 @@ def specialKeyListener(key, x, y):
 def animate():
 
     #//codes for any changes in Models, Camera
-    global dm_vert, dm_pos, catcher_position, dm_color, catcher_color, score, over
-
+    global dm_vert, dm_pos, catcher_position, dm_color, catcher_color, score, over, start
+    x=time.time()
+    diff=x-start
+    inc=(diff//3)/10
+    if inc <0.1:
+        inc=0.1
     if over==False and pause==False:
         glutPostRedisplay()
-        dm_vert-=0.3
+        dm_vert-=inc
         if dm_vert<=20 and catcher_position-40<=dm_pos<=catcher_position+40:
             score+=1
             print(f"Score: {score}")
             dm_pos=random.randint(100,450)
             dm_vert=500
             dm_color = (random.uniform(0.5, 1.0), random.uniform(0.5, 1.0), random.uniform(0.5, 1.0))
-        elif dm_vert<0:
+        elif dm_vert<=5:
             catcher_color = (1.0, 0.0, 0.0)
             over=True
             print(f"Game Over! Score {score}")
