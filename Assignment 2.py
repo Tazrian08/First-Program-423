@@ -109,7 +109,7 @@ score=0
 start=time.time()
 over=False
 pause=False
-terminate=False
+
 catcher_position=250
 dm_pos=random.randint(100,450)
 dm_vert=500
@@ -121,34 +121,32 @@ dm_color=(random.uniform(0.5, 1.0), random.uniform(0.5, 1.0), random.uniform(0.5
 
 
 def draw_catcher():
-    global catcher_position, catcher_color,terminate
+    global catcher_position, catcher_color
     # Define catcher dimensions
-    if terminate==False:
-        catcher_width = 60
-        catcher_height = 10
-        catcher_x = int(catcher_position - catcher_width / 2)
-        catcher_y = 10  # You can adjust the y-coordinate as needed
+    catcher_width = 60
+    catcher_height = 10
+    catcher_x = int(catcher_position - catcher_width / 2)
+    catcher_y = 10  # You can adjust the y-coordinate as needed
 
-        glColor3f(catcher_color[0],catcher_color[1],catcher_color[2])
+    glColor3f(catcher_color[0],catcher_color[1],catcher_color[2])
 
-        # Draw catcher bowl using midpoint line drawing algorithm
-        # Bottom line
-        midpointLineDrawing(catcher_x, catcher_y, catcher_x + catcher_width, catcher_y)
-        # Left side line
-        midpointLineDrawing(catcher_x, catcher_y, catcher_x-10, catcher_y + catcher_height)
-        # Right side line
-        midpointLineDrawing(catcher_x + catcher_width, catcher_y, catcher_x + catcher_width+10, catcher_y + catcher_height)
-        # Top line
-        midpointLineDrawing(catcher_x-10, catcher_y + catcher_height, catcher_x + catcher_width+10, catcher_y + catcher_height)
+    # Draw catcher bowl using midpoint line drawing algorithm
+    # Bottom line
+    midpointLineDrawing(catcher_x, catcher_y, catcher_x + catcher_width, catcher_y)
+    # Left side line
+    midpointLineDrawing(catcher_x, catcher_y, catcher_x-10, catcher_y + catcher_height)
+    # Right side line
+    midpointLineDrawing(catcher_x + catcher_width, catcher_y, catcher_x + catcher_width+10, catcher_y + catcher_height)
+    # Top line
+    midpointLineDrawing(catcher_x-10, catcher_y + catcher_height, catcher_x + catcher_width+10, catcher_y + catcher_height)
 
 
 
 def draw_diamond():
     global dm_pos, over
     global dm_vert
-    global terminate
     # Define catcher dimensions
-    if terminate==False and over==False:
+    if over==False:
         dm_width = 10
         dm_height = 5
         dm_x = int(dm_pos - dm_width / 2)
@@ -226,8 +224,7 @@ def animate():
 
 
 def mouseListener(button, state, x, y):  # /#/x, y is the x-y of the screen (2D)
-    global pause,score,dm_vert,dm_pos, catcher_color, over, terminate
-    print(x,y)
+    global pause,score,dm_vert,dm_pos, catcher_color, over, start
     if button == GLUT_LEFT_BUTTON:
         if (state == GLUT_DOWN):
             if y<=50:
@@ -237,14 +234,15 @@ def mouseListener(button, state, x, y):  # /#/x, y is the x-y of the screen (2D)
                     dm_pos = random.randint(100, 450)
                     over=False
                     catcher_color = (1.0, 1.0, 1.0)
-
+                    start = time.time()
                 if 230 <= x <= 280:
                     if pause==False:
                         pause=True
                     else:
                         pause=False
                 if 460<=x<=490:
-                    terminate=True
+                    print(f"Goodbye! Score {score}")
+                    glutLeaveMainLoop()
     glutPostRedisplay()
 
 
