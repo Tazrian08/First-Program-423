@@ -15,7 +15,6 @@ def WritePixel(x, y):
 
 
 def findZone(x, y):
-    # Find the zone based on the octant
     zone = 0
     dx = abs(x[1] - x[0])
     dy = abs(y[1] - y[0])
@@ -122,22 +121,21 @@ dm_color=(random.uniform(0.5, 1.0), random.uniform(0.5, 1.0), random.uniform(0.5
 
 def draw_catcher():
     global catcher_position, catcher_color
-    # Define catcher dimensions
+
     catcher_width = 60
     catcher_height = 10
     catcher_x = int(catcher_position - catcher_width / 2)
-    catcher_y = 10  # You can adjust the y-coordinate as needed
+    catcher_y = 10
 
     glColor3f(catcher_color[0],catcher_color[1],catcher_color[2])
 
-    # Draw catcher bowl using midpoint line drawing algorithm
-    # Bottom line
+
     midpointLineDrawing(catcher_x, catcher_y, catcher_x + catcher_width, catcher_y)
-    # Left side line
+
     midpointLineDrawing(catcher_x, catcher_y, catcher_x-10, catcher_y + catcher_height)
-    # Right side line
+
     midpointLineDrawing(catcher_x + catcher_width, catcher_y, catcher_x + catcher_width+10, catcher_y + catcher_height)
-    # Top line
+
     midpointLineDrawing(catcher_x-10, catcher_y + catcher_height, catcher_x + catcher_width+10, catcher_y + catcher_height)
 
 
@@ -145,22 +143,21 @@ def draw_catcher():
 def draw_diamond():
     global dm_pos, over
     global dm_vert
-    # Define catcher dimensions
+
     if over==False:
         dm_width = 10
         dm_height = 5
         dm_x = int(dm_pos - dm_width / 2)
-        dm_y = dm_vert  # You can adjust the y-coordinate as needed
+        dm_y = dm_vert
 
 
-        # Draw catcher bowl using midpoint line drawing algorithm
-        # Bottom line
+
         midpointLineDrawing(dm_x, dm_y, dm_x + dm_width//2, dm_y+dm_height)
-        # Left side line
+
         midpointLineDrawing(dm_x + dm_width//2, dm_y+dm_height, dm_x+dm_width, dm_y)
-        # Right side line
+
         midpointLineDrawing(dm_x+dm_width, dm_y, dm_x + dm_width//2, dm_y-dm_height)
-        # Top line
+
         midpointLineDrawing(dm_x + dm_width//2, dm_y-dm_height, dm_x, dm_y)
 
 
@@ -201,7 +198,7 @@ def specialKeyListener(key, x, y):
 
 def animate():
 
-    #//codes for any changes in Models, Camera
+
     global dm_vert, dm_pos, catcher_position, dm_color, catcher_color, score, over, start
     x=time.time()
     diff=x-start
@@ -235,6 +232,7 @@ def mouseListener(button, state, x, y):  # /#/x, y is the x-y of the screen (2D)
                     over=False
                     catcher_color = (1.0, 1.0, 1.0)
                     start = time.time()
+                    print(f"Starting Over! Score {score}")
                 if 230 <= x <= 280:
                     if pause==False:
                         pause=True
@@ -270,7 +268,7 @@ glutInit()
 glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB)
 glutInitWindowSize(500, 500)
 glutInitWindowPosition(100, 100)
-glutCreateWindow(b"Midpoint Line Drawing")
+glutCreateWindow(b"The Game")
 glutDisplayFunc(display)
 glutSpecialFunc(specialKeyListener)
 glutMouseFunc(mouseListener)
