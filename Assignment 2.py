@@ -183,17 +183,26 @@ def draw_cross():
     midpointLineDrawing(460, 490, 490, 450)
     midpointLineDrawing(460, 450, 490, 490)
 
-
+catcher_speed=10
 
 def specialKeyListener(key, x, y):
-    global catcher_position, over
+    global catcher_position, over, catcher_speed
     if over==False and pause==False:
         if catcher_position+60+5<=500: #Width of catcher is 60, +5 for the extension of the top line
             if key==GLUT_KEY_RIGHT:
-                catcher_position += 10
+                catcher_position += catcher_speed
         if catcher_position-70 >= 0:
             if key== GLUT_KEY_LEFT:
-                catcher_position -= 10
+                catcher_position -= catcher_speed
+        if key == GLUT_KEY_UP and catcher_speed<25:
+            catcher_speed+=2
+            print("Catcher speed increased")
+        if key == GLUT_KEY_DOWN and catcher_speed>1:
+            catcher_speed-=2
+            print("Catcher speed decreased")
+        if key == GLUT_KEY_HOME:
+            catcher_speed=10
+            print("catcher speed reset")
         glutPostRedisplay()
 
 def animate():
